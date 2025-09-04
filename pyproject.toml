@@ -1,0 +1,29 @@
+[project]
+name = "asuna-salon"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "saqibmurtaza", email = "saqibmurtazakhan@gmai.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "beautifulsoup4>=4.13.5",
+    "chainlit>=2.5.5",
+    "google-api-python-client>=2.167.0",
+    "google-auth-httplib2>=0.2.0",
+    "google-auth-oauthlib>=1.2.1",
+    "gspread>=6.2.0",
+    "literalai==0.1.201",
+    "openai-agents>=0.0.12",
+]
+
+[project.scripts]
+asuna_salon = "salon_chatbot:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/salon_chatbot"]

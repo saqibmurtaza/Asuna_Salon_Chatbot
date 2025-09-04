@@ -1,0 +1,21 @@
+/* /public/custom.css */
+
+/* Target the main header element where the logo should be */
+#header {
+    /* Set the salon's logo as the background image */
+    background-image: url('/public/logo_dark.png');
+    /* Ensure the logo does not repeat */
+    background-repeat: no-repeat;
+    /* Center the logo within the element */
+    background-position: center;
+    /* Control the size of the logo */
+    background-size: contain; 
+    /* Add some padding to give it space */
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Hide the default, problematic <img> element that Chainlit creates */
+#header img {
+    display: none !important;
+}

@@ -1,0 +1,36 @@
+[project]
+user_env = []
+session_timeout = 3600
+allow_origins = ["*"]
+
+[features]
+unsafe_allow_html = false
+auto_tag_thread = true
+edit_message = true
+
+# =============================================================
+#                  BRANDING CONFIGURATIONS
+# =============================================================
+
+[UI]
+name = "Asuna Salon Concierge"
+description = "Your personal guide to our services and appointments."
+default_theme = "light"
+# Link to your custom stylesheet
+custom_css = "/public/custom.css"
+custom_theme = "/public/theme.json"
+
+[UI.theme.dark]
+background = "#121212"
+paper = "#1E1E1E"
+primary_main = "#C9A965"     # Gold - main brand color
+primary_dark = "#A4864D"
+primary_light = "#EAD6A5"
+text_primary = "#FFFFFF"
+text_secondary = "#BDBDBD"
+
+# Logo: place 'logo_dark.png' in 'public/' directory
+# Chainlit will auto-load it for the dark theme.
+
+[meta]
+generated_by = "2.7.1.1"
