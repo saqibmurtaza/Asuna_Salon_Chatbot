@@ -5,35 +5,33 @@ from bs4 import BeautifulSoup
 @function_tool
 def search_services(query: str) -> str:
     """
-    Searches for salon services on Asuna Salon's client site.
+    Searches for salon services on Asuna Salon's official website.
     Returns formatted matching services with names, prices, and descriptions.
     """
 
-    url = "https://test-server1.github.io/Asuna-salon-v2/"
+    url = "https://asunosalon.co.uk/"
     try:
         response = requests.get(url)
         soup = BeautifulSoup(response.text, "html.parser")
 
-        # Find all services (adapt this based on actual HTML structure)
-        services = soup.select(".service-card")
+        # Find all services
+        services = soup.select(".services-two__list li")
         results = []
 
         for service in services:
-            title = service.select_one(".service-title")
-            price = service.select_one(".service-price")
-            description = service.select_one(".service-description")
+            name_element = service.select_one(".services-two__services-name h3 a")
+            price_element = service.select_one(".services-two__services-price h4")
 
-            if not title:
-                continue
+            name = name_element.text.strip() if name_element else "N/A"
+            price = price_element.text.strip() if price_element else "N/A"
 
-            full_text = f"{title.text.strip()} {description.text.strip() if description else ''}".lower()
-            if query.lower() in full_text:
-                results.append(f"💇‍♀️ **{title.text.strip()}** - {price.text.strip() if price else 'Price N/A'}\n{description.text.strip() if description else ''}\n")
+            if query.lower() in name.lower():
+                results.append(f"**{name}** - {price}")
 
         if not results:
-            return f"Sorry, I couldn't find any services related to '{query}'. Please try something else."
+            return f"Sorry, I couldn't find any services matching '{query}'. You can ask for a full list of services."
 
-        return "\n".join(results)
+        return "Here are the services I found:\n" + "\n".join(results)
 
     except Exception as e:
         return f"An error occurred while fetching services: {str(e)}"

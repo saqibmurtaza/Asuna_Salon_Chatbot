@@ -73,10 +73,10 @@ def store_booking_context(name=None, service=None, date=None, time=None):
 # --- Booking Tool ---
 @function_tool
 def book_appointment(
-    name: Optional[str] = None,
-    service: Optional[str] = None,
-    date: Optional[str] = None,
-    time: Optional[str] = None
+    name: str = "",
+    service: str = "",
+    date: str = "",
+    time: str = ""
 ) -> str:
     """
     Book an appointment at Asuna Salon.
