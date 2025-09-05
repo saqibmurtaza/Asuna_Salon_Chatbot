@@ -1,148 +1,3 @@
-# import chainlit as cl
-# from salon_chatbot.agents.triage_agent import triage_agent
-# from salon_chatbot.agents.config_agents import config
-# from agents import Runner
-
-# # Define the persistent actions that will be available throughout the chat.
-# # This list can be reused for multiple messages.
-# persistent_actions = [
-#     cl.Action(
-#         name="explore_services", 
-#         value="Explore Our Services", 
-#         label="Explore Our Services", 
-#         payload={}
-#     ),
-#     cl.Action(
-#         name="book_appointment", 
-#         value="Book an Appointment", 
-#         label="Book an Appointment",
-#         payload={}
-#     ),
-#     cl.Action(
-#         name="meet_stylists", 
-#         value="Meet Our Stylists", 
-#         label="Meet Our Stylists",
-#         payload={}
-#     ),
-#     cl.Action(
-#         name="show_hours", 
-#         value="Show Opening Hours", 
-#         label="Show Opening Hours",
-#         payload={}
-#     )
-# ]
-
-# @cl.on_chat_start
-# async def on_chat_start():
-#     """
-#     Initializes the chat session and displays the welcome message with persistent actions.
-#     """
-#     cl.user_session.set("agent", triage_agent)
-    
-#     welcome_message = (
-#         "Welcome to Asuna Salon, where your transformation begins. "
-#         "I'm here to guide you through our services or to help you schedule your next moment of luxury. "
-#         "If you'd like to connect with our marketing team, just say 'Hi' and I'll put you through.."
-#     )
-    
-#     # Send the welcome message with the persistent actions
-#     await cl.Message(content=welcome_message, actions=persistent_actions).send()
-
-# @cl.on_message
-# async def on_message(message: cl.Message):
-#     """
-#     Handles incoming user messages and routes them through the appropriate agent.
-#     """
-#     agent = cl.user_session.get("agent")
-    
-#     # Run the agent with the user's message content
-#     result = await Runner.run(
-#         agent,
-#         input=message.content,
-#         run_config=config
-#     )
-
-#     cl.user_session.set("agent", result.last_agent)
-    
-#     # Send the agent's response and re-attach the persistent actions
-#     await cl.Message(content=result.final_output, actions=persistent_actions).send()
-
-# # --- Action Callbacks ---
-# # These functions now have specific logic to handle each button's functionality.
-
-# @cl.action_callback("explore_services")
-# async def on_explore_services(action: cl.Action):
-#     """
-#     Handles the 'Explore Our Services' button click by displaying a list of services.
-#     """
-#     # In a real app, you would fetch this from a database or salon_tools.py
-#     services_list = """
-#     Of course! Here are some of our most popular services:
-#     - **Luxury Haircut & Style:** Includes a consultation, wash, cut, and professional styling.
-#     - **Signature Manicure & Pedicure:** A complete pampering experience for your hands and feet.
-#     - **Advanced Hair Coloring:** From balayage to full-color transformations by our expert colorists.
-#     - **Revitalizing Spa Facials:** Tailored to your skin type for a radiant glow.
-
-#     Which of these interests you the most?
-#     """
-#     await cl.Message(content=services_list, actions=persistent_actions).send()
-#     # Notify the user that the action was handled
-#     await action.remove() # Optional: remove the button after click to prevent re-clicks
-
-
-# @cl.action_callback("book_appointment")
-# async def on_book_appointment(action: cl.Action):
-#     """
-#     Handles the 'Book an Appointment' button click by guiding the user.
-#     """
-#     booking_prompt = (
-#         "Perfect! To schedule your appointment, could you please let me know: \n"
-#         "1. Which service you would like to book? \n"
-#         "2. What is your preferred date and time?"
-#     )
-#     await cl.Message(content=booking_prompt, actions=persistent_actions).send()
-#     await action.remove()
-
-
-# @cl.action_callback("meet_stylists")
-# async def on_meet_stylists(action: cl.Action):
-#     """Handles the 'Meet Our Stylists' button click by introducing the team with images."""
-    
-#     # Define the elements with images and text for each stylist
-#     elements = [
-#         cl.Image(name="Emily", display="inline", path="./public/Emila.jpg"),
-#         cl.Text(name="Emily Carter", content="Specializes in creative coloring and modern cuts.", display="inline"),
-#         cl.Image(name="James", display="inline", path="./public/anna.jpg"),
-#         cl.Text(name="James Lee", content="A master of classic hairstyling and men's grooming.", display="inline"),
-#     ]
-
-#     stylist_info = "Our talented team is the heart of Asuna Salon. Here are our lead stylists:"
-    
-#     # Send the message with the visual elements
-#     await cl.Message(
-#         content=stylist_info,
-#         elements=elements,
-#         actions=persistent_actions
-#     ).send()
-#     await action.remove()
-
-
-# @cl.action_callback("show_hours")
-# async def on_show_hours(action: cl.Action):
-#     """Displays the salon's opening hours."""
-#     hours_info = """
-#     We would be delighted to welcome you during our opening hours:
-#     - **Tuesday - Saturday:** 9:00 AM - 7:00 PM
-#     - **Sunday:** 10:00 AM - 5:00 PM
-#     - **Monday:** Closed
-
-#     Please let me know if you'd like to book an appointment within these times.
-#     """
-#     await cl.Message(content=hours_info, actions=persistent_actions).send()
-#     await action.remove()
-
-
-from unittest import result
 import chainlit as cl
 from salon_chatbot.agents.triage_agent import triage_agent
 from salon_chatbot.agents.booking_agent import zara as booking_agent
@@ -151,10 +6,11 @@ from agents import Runner
 
 # --- Persistent Action Buttons ---
 persistent_actions = [
-    cl.Action(name="explore_services", value="explore_services", label="🧖 Explore Services", payload={}),
-    cl.Action(name="book_appointment", value="book_appointment", label="📅 Book Appointment", payload={}),
-    cl.Action(name="meet_stylists", value="meet_stylists", label="💇‍♀️ Meet Stylists", payload={}),
-    cl.Action(name="show_hours", value="show_hours", label="⏰ Opening Hours", payload={}),
+    cl.Action(name="explore_services", value="explore_services", label="✨ Our Services", payload={}),
+    cl.Action(name="book_appointment", value="book_appointment", label="📅 Book Now", payload={}),
+    cl.Action(name="meet_stylists", value="meet_stylists", label="💇‍♀️ Our Team", payload={}),
+    cl.Action(name="show_hours", value="show_hours", label="⏰ Hours & Location", payload={}),
+    cl.Action(name="contact_us", value="contact_us", label="📞 Contact Us", payload={}),
 ]
 
 @cl.on_chat_start
@@ -163,13 +19,13 @@ async def on_chat_start():
     cl.user_session.set("booking_step", None)
 
     welcome_message = (
-        "Welcome to Asuna Salon ✨\n"
-        "I'm your assistant for discovering services, booking appointments, and more!\n"
-        "Let’s begin—how can I help you today?"
+        "🌟 **Welcome to Asuna Salon** 🌟\n\n"
+        "Where luxury meets transformation. I'm here to help you discover our exquisite services, "
+        "meet our talented stylists, or secure your perfect appointment moment.\n\n"
+        "How may I assist you today?"
     )
 
     await cl.Message(content=welcome_message, actions=persistent_actions).send()
-
 
 @cl.on_message
 async def on_message(message: cl.Message):
@@ -184,75 +40,178 @@ async def on_message(message: cl.Message):
     result = await Runner.run(agent, input=message.content, run_config=config)
     cl.user_session.set("agent", result.last_agent)
 
-    # ✅ Extract metadata from context wrapper
+    # Extract metadata from context wrapper
     metadata = getattr(result.context_wrapper, "metadata", {}) or {}
-    print(f"Metadata: {metadata}")
-
-    # ✅ Update booking_step if included in metadata
+    
+    # Update booking_step if included in metadata
     if "booking_step" in metadata:
         cl.user_session.set("booking_step", metadata["booking_step"])
 
     await cl.Message(content=result.final_output, actions=persistent_actions).send()
 
-
-# --- Action Callbacks ---
+# --- Professional Action Callbacks ---
 
 @cl.action_callback("explore_services")
 async def on_explore_services(action: cl.Action):
     services = """
-Here are some popular services at **Asuna Salon**:
+**Our Professional Services** ✨
 
-💇‍♀️ **Haircut & Styling** – Modern, classic, or custom.
-🎨 **Hair Coloring** – Balayage, highlights, full color.
-💅 **Manicure & Pedicure** – With premium polish.
-💆‍♀️ **Spa Facial Treatments** – Relax and rejuvenate.
+💇 **Hair Services**
+• Precision Cutting & Styling
+• Creative Coloring & Highlights
+• Hair Treatments & Conditioning
+• Hair Extensions
+• Men's Grooming
 
-Let me know which one you’re curious about!
+💅 **Nail Services** 
+• Luxury Manicures
+• Spa Pedicures
+• Gel Polish & Nail Art
+• Nail Extensions
+
+👁️ **Beauty Treatments**
+• Eyelash Extensions & Tinting
+• Eyebrow Shaping & Henna
+• Professional Waxing
+• Special Occasion Makeup
+
+*Which service category interests you today?*
 """
     await cl.Message(content=services, actions=persistent_actions).send()
     await action.remove()
 
-
 @cl.action_callback("book_appointment")
 async def on_book_appointment(action: cl.Action):
+    # Clear previous context and start fresh
+    cl.user_session.set("booking_context", {
+        "current_step": "service_selection",
+        "collected_data": {},
+        "service_confirmed": False,
+        "date_confirmed": False, 
+        "time_confirmed": False,
+        "name_collected": False,
+        "booking_reference": None
+    })
+    
     cl.user_session.set("agent", booking_agent)
-    cl.user_session.set("booking_step", "collect_service")
+    cl.user_session.set("booking_step", "service_selection")
 
     prompt = (
-        "Great! Let's get you booked 📅\n"
-        "**Step 1:** What service would you like to book?"
+        "Lovely! Let's create your perfect appointment experience 🌸\n\n"
+        "**What type of service are you interested in?**\n\n"
+        "We specialize in:\n"
+        "• **Hair Services** - Cutting, coloring, treatments, extensions\n"
+        "• **Nail Services** - Manicures, pedicures, nail art\n"
+        "• **Beauty Treatments** - Eyelashes, eyebrows, facials, waxing\n\n"
+        "Please specify a category or the exact service you'd like to book."
     )
     await cl.Message(content=prompt, actions=persistent_actions).send()
     await action.remove()
 
-
 @cl.action_callback("meet_stylists")
 async def on_meet_stylists(action: cl.Action):
+    team_intro = """
+**Meet Our Artistic Family** 💫
+
+Our stylists aren't just technicians—they're artists who understand that beauty is personal. Each team member brings unique expertise to ensure your experience is nothing short of exceptional.
+
+"""
+
     elements = [
-        cl.Image(name="Emily", display="inline", path="./public/Emila.jpg"),
-        cl.Text(name="Emily Carter", content="🎨 Hair Color Specialist | 💇 Women's Cuts", display="inline"),
-        cl.Image(name="James", display="inline", path="./public/anna.jpg"),
-        cl.Text(name="James Lee", content="✂️ Classic & Modern Styling | 👨 Men's Grooming", display="inline"),
+        cl.Image(name="emily", display="inline", path="./public/emily.jpg"),
+        cl.Text(name="emily_title", content="**Emily Carter**", display="inline"),
+        cl.Text(name="emily_bio", content="Creative Director | Color Specialist\n15 years transforming visions into reality with bespoke color techniques", display="block"),
+        
+        cl.Image(name="james", display="inline", path="./public/james.jpg"),
+        cl.Text(name="james_title", content="**James Lee**", display="inline"),
+        cl.Text(name="james_bio", content="Master Stylist | Cutting Expert\nRenowned for precision cutting and personalized style consultations", display="block"),
+        
+        cl.Image(name="sophia", display="inline", path="./public/sophia.jpg"),
+        cl.Text(name="sophia_title", content="**Sophia Rodriguez**", display="inline"),
+        cl.Text(name="sophia_bio", content="Nail Artist | Wellness Specialist\nCreating miniature masterpieces with attention to detail and care", display="block")
     ]
 
     await cl.Message(
-        content="Meet our amazing team of stylists 💫",
+        content=team_intro,
         elements=elements,
         actions=persistent_actions
     ).send()
     await action.remove()
 
-
 @cl.action_callback("show_hours")
 async def on_show_hours(action: cl.Action):
-    hours = """
-**Salon Opening Hours** ⏰
+    hours_location = """
+**Visit Our Sanctuary** 🏛️
 
-- **Tuesday - Saturday:** 9:00 AM – 7:00 PM  
-- **Sunday:** 10:00 AM – 5:00 PM  
-- **Monday:** Closed
+📍 **Location**
+123 Luxury Lane, London SW1A 1AA
+*Just moments from Knightsbridge*
 
-Let me know when you'd like to visit!
+⏰ **Opening Hours**
+Tuesday - Friday: 9:00 AM – 8:00 PM
+Saturday: 9:00 AM – 6:00 PM  
+Sunday: 10:00 AM – 4:00 PM
+Monday: By appointment only
+
+🚗 **Parking & Transport**
+• Complimentary valet parking
+• 5-minute walk from Knightsbridge Station
+• Bike racks available
+
+*We recommend booking in advance to secure your preferred time*
 """
-    await cl.Message(content=hours, actions=persistent_actions).send()
+    await cl.Message(content=hours_location, actions=persistent_actions).send()
     await action.remove()
+
+@cl.action_callback("contact_us")
+async def on_contact_us(action: cl.Action):
+    contact_info = """
+**Connect With Us** 📞
+
+We love hearing from our community and are here to help with any questions.
+
+☎️ **By Phone**
+020 7123 4567
+*Lines open during salon hours*
+
+📧 **By Email**
+hello@asunasalon.co.uk
+*We respond within 24 hours*
+
+💬 **In Person**
+Visit our salon for a complimentary consultation
+
+📱 **Social Media**
+@asunasalon on Instagram & Facebook
+*See our latest work and behind-the-scenes moments*
+
+*What's the best way for us to assist you today?*
+"""
+    await cl.Message(content=contact_info, actions=persistent_actions).send()
+    await action.remove()
+
+# --- Enhanced booking flow handler ---
+@cl.set_starters
+async def set_starters():
+    return [
+        cl.Starter(
+            label="I'd like to book a haircut",
+            message="I'm interested in booking a haircut appointment",
+            icon="/public/scissors.svg"
+        ),
+        cl.Starter(
+            label="What services do you offer?",
+            message="Can you show me your service menu?",
+            icon="/public/menu.svg"
+        ),
+        cl.Starter(
+            label="Do you have weekend availability?",
+            message="Are you open on weekends for appointments?",
+            icon="/public/calendar.svg"
+        ),
+        cl.Starter(
+            label="I need to cancel my appointment",
+            message="I need to cancel or reschedule my booking",
+            icon="/public/cancel.svg"
+        )
+    ]
