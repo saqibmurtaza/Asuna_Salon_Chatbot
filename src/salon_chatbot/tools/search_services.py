@@ -61,10 +61,27 @@ SERVICES_DATA = {
 @function_tool
 def search_services(category: str) -> str:
     """
+
     Searches for salon services by category from a hardcoded list.
     Returns a formatted list of services with names, prices, and durations.
     Valid categories are: "Hair Services", "Nail Services", "Beauty Treatments".
     """
+    query_lower = query.lower()
+    
+    # Intercept category queries and redirect to appropriate response
+    category_responses = {
+        "hair services": "For hair services including cutting, coloring, treatments, and extensions, please let me know which specific service you'd like to book using our booking system.",
+        "nail services": "For nail services including manicures, pedicures, and nail art, I'd be happy to help you book an appointment. Which specific nail service are you interested in?",
+        "beauty treatments": "For beauty treatments like eyelash extensions, eyebrow services, and waxing, let's get you booked in! Which specific treatment would you like?",
+        "hair": "Hair services are one of our specialties! We offer cutting, coloring, treatments, and extensions. Would you like to book a specific hair service?",
+        "nail": "We offer wonderful nail services including manicures, pedicures, and nail art. Which specific service would you like to explore?",
+        "nails": "Our nail services include luxury manicures, spa pedicures, and beautiful nail art. What type of nail service are you looking for?",
+        "beauty": "For our beauty treatments including eyelashes, eyebrows, and waxing, I can help you book an appointment. Which specific service interests you?"
+    }
+    
+    if query_lower in category_responses:
+        return category_responses[query_lower]
+
 
     normalized_category = None
     if "hair" in category.lower():
