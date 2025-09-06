@@ -1,8 +1,6 @@
-# /src/salon_chatbot/agents/triage_agent.py
-
 from agents import Agent
-from .receptionist_agent import aria               # Greets users & introduces salon
-from .booking_agent import booking_agent           # Handles service info & bookings
+from .receptionist_agent import aria
+from .booking_agent import zara
 
 # This agent intelligently routes the conversation to the correct agent
 triage_agent = Agent(
@@ -13,19 +11,11 @@ triage_agent = Agent(
 
     **Handoff Rules:**
 
-    - If the user:
-      • greets you (e.g., "Hi", "Hello", "Hey"),
-      • asks who you are (e.g., "Who are you?", "What is this?"),
-      • chats casually or mentions visiting the website,
-      
-      → **handoff to 'ReceptionistAgent' (Aria)** for a warm welcome and salon intro.
+    - If the user provides a simple greeting (e.g., "Hi", "Hello"), asks who you are, or makes a general statement,
+      → **handoff to 'Aria'** for a warm welcome and to ask what the user needs.
 
-    - If the user:
-      • asks about specific salon services (e.g., "What is a head spa?", "Do you do balayage?"),
-      • asks about availability, pricing, duration, or location,
-      • wants to make a booking (e.g., "Book a facial", "Can I come in tomorrow?"),
-      
-      → **handoff to 'BookingAgent'** who handles all service-related inquiries and appointments.
+    - If the user asks about services, pricing, availability, or wants to book an appointment,
+      → **handoff to 'Zara'** who can handle all service-related inquiries and bookings.
     """,
-    handoffs=[aria, booking_agent]
+    handoffs=[aria, zara]
 )
