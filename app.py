@@ -145,7 +145,7 @@
 from unittest import result
 import chainlit as cl
 from salon_chatbot.agents.triage_agent import triage_agent
-from salon_chatbot.agents.booking_agent import booking_agent
+from salon_chatbot.agents.booking_agent import zara as booking_agent
 from salon_chatbot.agents.config_agents import config
 from agents import Runner
 

@@ -1,39 +1,19 @@
 from agents import function_tool
-import requests
-from bs4 import BeautifulSoup
+from typing import List, Dict
+from src.salon_chatbot.salon_data import services
 
 @function_tool
-def search_services(query: str) -> str:
+def search_services(query: str) -> List[Dict[str, str]]:
     """
-    Searches for salon services on Asuna Salon's client site.
-    Returns formatted matching services with names, prices, and descriptions.
+    Searches for salon services from the local data.
+    Returns a list of matching services with names, prices, descriptions, and categories.
     """
+    if not query or query.lower() == 'all':
+        return services
 
-    url = "https://test-server1.github.io/Asuna-salon-v2/"
-    try:
-        response = requests.get(url)
-        soup = BeautifulSoup(response.text, "html.parser")
+    results = []
+    for service in services:
+        if query.lower() in service['name'].lower() or query.lower() in service['category'].lower():
+            results.append(service)
 
-        # Find all services (adapt this based on actual HTML structure)
-        services = soup.select(".service-card")
-        results = []
-
-        for service in services:
-            title = service.select_one(".service-title")
-            price = service.select_one(".service-price")
-            description = service.select_one(".service-description")
-
-            if not title:
-                continue
-
-            full_text = f"{title.text.strip()} {description.text.strip() if description else ''}".lower()
-            if query.lower() in full_text:
-                results.append(f"💇‍♀️ **{title.text.strip()}** - {price.text.strip() if price else 'Price N/A'}\n{description.text.strip() if description else ''}\n")
-
-        if not results:
-            return f"Sorry, I couldn't find any services related to '{query}'. Please try something else."
-
-        return "\n".join(results)
-
-    except Exception as e:
-        return f"An error occurred while fetching services: {str(e)}"
+    return results
