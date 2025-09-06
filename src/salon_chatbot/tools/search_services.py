@@ -58,12 +58,15 @@ SERVICES_DATA = {
     }
 }
 
+from typing import List, Dict
+
 @function_tool
-def search_services(query: str) -> str:
+def search_services(query: str) -> List[Dict[str, str]]:
     """
-    Searches for salon services by category from a hardcoded list.
-    Returns a formatted list of services with names, prices, and durations.
-    Valid categories are: "Hair Services", "Nail Services", "Beauty Treatments".
+
+    Searches for salon services on Asuna Salon's official website.
+    Returns a list of matching services with names, prices, descriptions, and categories.
+
     """
     
     normalized_category = None
@@ -74,20 +77,37 @@ def search_services(query: str) -> str:
     elif "nail" in query.lower():
         normalized_category = "Nail Services"
 
-    if not normalized_category or normalized_category not in SERVICES_DATA:
-        return f"Sorry, I don't recognize the category '{query}'. Please choose from Hair, Nail, or Beauty services."
 
-    category_data = SERVICES_DATA[normalized_category]
-    
-    if not category_data["services"]:
-        return "Nail services are coming soon to our online booking system! Please check back later."
+    url = "https://asunosalon.co.uk/"
+    try:
+        response = requests.get(url)
+        soup = BeautifulSoup(response.text, "html.parser")
 
-    title = category_data["title"]
-    services = category_data["services"]
-    
-    results = []
-    for s in services:
-        duration_str = f" ({s['duration']})" if s['duration'] else ""
-        results.append(f"• {s['name']} - {s['price']}{duration_str}")
+        results = []
+        service_sections = soup.select(".services-two__single")
 
-    return f"✨ {title} ✨\n" + "\n".join(results) + "\nPlease specify the exact service you'd like to book:"
+        for section in service_sections:
+            category = section.select_one(".services-two__title").text.strip()
+            services = section.select(".services-two__list li")
+
+            for service in services:
+                name_element = service.select_one(".services-two__services-name h3 a")
+                price_element = service.select_one(".services-two__services-price h4")
+                description_element = service.select_one(".services-two__services-name p")
+
+                name = name_element.text.strip() if name_element else "N/A"
+                price = price_element.text.strip() if price_element else "N/A"
+                description = description_element.text.strip() if description_element else ""
+
+                if query.lower() in name.lower() or query.lower() in category.lower():
+                    results.append({
+                        "name": name,
+                        "price": price,
+                        "description": description,
+                        "category": category
+                    })
+
+        return results
+
+    except Exception as e:
+        return [{"error": f"An error occurred while fetching services: {str(e)}"}
