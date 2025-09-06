@@ -59,7 +59,7 @@ SERVICES_DATA = {
 }
 
 @function_tool
-def search_services(category: str) -> str:
+def search_services(query: str) -> str:
     """
 
     Searches for salon services by category from a hardcoded list.
@@ -84,15 +84,15 @@ def search_services(category: str) -> str:
 
 
     normalized_category = None
-    if "hair" in category.lower():
+    if "hair" in query_lower:
         normalized_category = "Hair Services"
-    elif "beauty" in category.lower():
+    elif "beauty" in query_lower:
         normalized_category = "Beauty Treatments"
-    elif "nail" in category.lower():
+    elif "nail" in query_lower or "nails" in query_lower:
         normalized_category = "Nail Services"
 
     if not normalized_category or normalized_category not in SERVICES_DATA:
-        return f"Sorry, I don't recognize the category '{category}'. Please choose from Hair, Nail, or Beauty services."
+        return f"Sorry, I don't recognize the category '{query}'. Please choose from Hair, Nail, or Beauty services."
 
     category_data = SERVICES_DATA[normalized_category]
 
