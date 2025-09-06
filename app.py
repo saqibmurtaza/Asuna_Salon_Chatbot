@@ -120,15 +120,15 @@ Our stylists aren't just technicians—they're artists who understand that beaut
     elements = [
         cl.Image(name="emily", display="inline", path="./public/emily.jpg"),
         cl.Text(name="emily_title", content="**Emily Carter**", display="inline"),
-        cl.Text(name="emily_bio", content="Creative Director | Color Specialist\n15 years transforming visions into reality with bespoke color techniques", display="block"),
+        cl.Text(name="emily_bio", content="Creative Director | Color Specialist\n15 years transforming visions into reality with bespoke color techniques", display="inline"),
         
         cl.Image(name="james", display="inline", path="./public/james.jpg"),
         cl.Text(name="james_title", content="**James Lee**", display="inline"),
-        cl.Text(name="james_bio", content="Master Stylist | Cutting Expert\nRenowned for precision cutting and personalized style consultations", display="block"),
+        cl.Text(name="james_bio", content="Master Stylist | Cutting Expert\nRenowned for precision cutting and personalized style consultations", display="inline"),
         
         cl.Image(name="sophia", display="inline", path="./public/sophia.jpg"),
         cl.Text(name="sophia_title", content="**Sophia Rodriguez**", display="inline"),
-        cl.Text(name="sophia_bio", content="Nail Artist | Wellness Specialist\nCreating miniature masterpieces with attention to detail and care", display="block")
+        cl.Text(name="sophia_bio", content="Nail Artist | Wellness Specialist\nCreating miniature masterpieces with attention to detail and care", display="inline")
     ]
 
     await cl.Message(
