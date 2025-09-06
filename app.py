@@ -216,11 +216,14 @@ Let me know which one you’re curious about!
 @cl.action_callback("book_appointment")
 async def on_book_appointment(action: cl.Action):
     cl.user_session.set("agent", booking_agent)
-    cl.user_session.set("booking_step", "collect_service")
+    cl.user_session.set("booking_step", "collect_service_category")
 
     prompt = (
-        "Great! Let's get you booked 📅\n"
-        "**Step 1:** What service would you like to book?"
+        "Lovely! Let's create your perfect appointment experience 🌸\n"
+        "What type of service are you interested in? We specialize in:\n"
+        "• Hair Services\n"
+        "• Nail Services\n"
+        "• Beauty Treatments"
     )
     await cl.Message(content=prompt, actions=persistent_actions).send()
     await action.remove()
