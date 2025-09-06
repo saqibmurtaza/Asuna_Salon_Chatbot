@@ -2,38 +2,45 @@ from agents import function_tool
 import requests
 from bs4 import BeautifulSoup
 
+from typing import List, Dict
+
 @function_tool
-def search_services(query: str) -> str:
+def search_services(query: str) -> List[Dict[str, str]]:
     """
-    Searches for salon services on Asuna Salon's client site.
-    Returns formatted matching services with names, prices, and descriptions.
+    Searches for salon services on Asuna Salon's official website.
+    Returns a list of matching services with names, prices, descriptions, and categories.
     """
 
-    url = "https://test-server1.github.io/Asuna-salon-v2/"
+    url = "https://asunosalon.co.uk/"
     try:
         response = requests.get(url)
         soup = BeautifulSoup(response.text, "html.parser")
 
-        # Find all services (adapt this based on actual HTML structure)
-        services = soup.select(".service-card")
         results = []
+        service_sections = soup.select(".services-two__single")
 
-        for service in services:
-            title = service.select_one(".service-title")
-            price = service.select_one(".service-price")
-            description = service.select_one(".service-description")
+        for section in service_sections:
+            category = section.select_one(".services-two__title").text.strip()
+            services = section.select(".services-two__list li")
 
-            if not title:
-                continue
+            for service in services:
+                name_element = service.select_one(".services-two__services-name h3 a")
+                price_element = service.select_one(".services-two__services-price h4")
+                description_element = service.select_one(".services-two__services-name p")
 
-            full_text = f"{title.text.strip()} {description.text.strip() if description else ''}".lower()
-            if query.lower() in full_text:
-                results.append(f"💇‍♀️ **{title.text.strip()}** - {price.text.strip() if price else 'Price N/A'}\n{description.text.strip() if description else ''}\n")
+                name = name_element.text.strip() if name_element else "N/A"
+                price = price_element.text.strip() if price_element else "N/A"
+                description = description_element.text.strip() if description_element else ""
 
-        if not results:
-            return f"Sorry, I couldn't find any services related to '{query}'. Please try something else."
+                if query.lower() in name.lower() or query.lower() in category.lower():
+                    results.append({
+                        "name": name,
+                        "price": price,
+                        "description": description,
+                        "category": category
+                    })
 
-        return "\n".join(results)
+        return results
 
     except Exception as e:
-        return f"An error occurred while fetching services: {str(e)}"
+        return [{"error": f"An error occurred while fetching services: {str(e)}"}]

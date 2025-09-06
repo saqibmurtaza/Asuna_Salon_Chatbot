@@ -44,77 +44,32 @@
 #         return f"❌ Unexpected error: {str(e)}"
 
 
-# src/salon_chatbot/tools/booking_tool.py
-
-
 from agents import function_tool
-import requests
-import os
-from dotenv import load_dotenv
-import chainlit as cl  # ✅ Add this import
-from typing import Optional
+import uuid
 
-# --- Helper function to parse and store structured booking data ---
-def store_booking_context(name=None, service=None, date=None, time=None):
-    context = cl.user_session.get("booking_context") or {}
-
-    if name:
-        context["name"] = name
-    if service:
-        context["service"] = service
-    if date:
-        context["date"] = date
-    if time:
-        context["time"] = time
-
-    cl.user_session.set("booking_context", context)
-    return context
-
-# --- Booking Tool ---
 @function_tool
-def book_appointment(
-    name: Optional[str] = None,
-    service: Optional[str] = None,
-    date: Optional[str] = None,
-    time: Optional[str] = None
-) -> str:
+def book_appointment(name: str, service: str, date: str, time: str) -> str:
     """
-    Book an appointment at Asuna Salon.
+    Confirms and finalizes a booking at Asuna Salon, and generates a booking reference number.
+
     Parameters:
-    - name: Full name of the person booking
-    - service: Service they want (e.g., Manicure)
-    - date: Appointment date (YYYY-MM-DD)
-    - time: Appointment time (HH:MM)
+    - name: Full name of the person booking.
+    - service: The service they want to book (e.g., "Manicure").
+    - date: The appointment date in YYYY-MM-DD format.
+    - time: The appointment time in HH:MM format.
     """
 
-    # Step 1: Store what the user already gave
-    booking = store_booking_context(name, service, date, time)
+    # Generate a unique reference number
+    booking_id = str(uuid.uuid4()).split('-')[0][:4].upper()
+    reference_number = f"ASU-{date.replace('-', '')}-{booking_id}"
 
-    # Step 2: Check what info is still missing
-    missing = [field for field in ["name", "service", "date", "time"] if not booking.get(field)]
-
-    if missing:
-        prompts = {
-            "name": "May I have your full name, please?",
-            "service": "Which service would you like to book?",
-            "date": "What date would you prefer? (e.g., 2025-08-28)",
-            "time": "At what time would you like the appointment? (e.g., 14:00)"
-        }
-        return (
-            "To complete your booking, I need the following:\n" +
-            "\n".join([f"• {prompts[field]}" for field in missing])
-        )
-
-    # Step 3: Confirm final booking message
-    name = booking["name"]
-    service = booking["service"]
-    date = booking["date"]
-    time = booking["time"]
-
-    cl.user_session.set("booking_context", {})  # Reset context after completion
-
-    return (
-        f"You're all set, {name}! ✨\n"
-        f"I've booked your **{service}** on **{date}** at **{time}**.\n"
-        f"We look forward to seeing you at Asuna Salon!"
+    confirmation_message = (
+        f"🎉 Booking Confirmed! Reference: {reference_number}\n"
+        f"• Service: {service}\n"
+        f"• Date: {date}\n"
+        f"• Time: {time}\n"
+        f"• Client: {name}\n\n"
+        f"You'll receive a confirmation 24 hours before your appointment. We look forward to seeing you at Asuna Salon! ✨"
     )
+
+    return confirmation_message
