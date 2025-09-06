@@ -94,16 +94,16 @@ async def on_book_appointment(action: cl.Action):
     })
     
     cl.user_session.set("agent", booking_agent)
-    cl.user_session.set("booking_step", "service_selection")
+
+    cl.user_session.set("booking_step", "collect_service_category")
 
     prompt = (
-        "Lovely! Let's create your perfect appointment experience 🌸\n\n"
-        "**What type of service are you interested in?**\n\n"
-        "We specialize in:\n"
-        "• **Hair Services** - Cutting, coloring, treatments, extensions\n"
-        "• **Nail Services** - Manicures, pedicures, nail art\n"
-        "• **Beauty Treatments** - Eyelashes, eyebrows, facials, waxing\n\n"
-        "Please specify a category or the exact service you'd like to book."
+        "Lovely! Let's create your perfect appointment experience 🌸\n"
+        "What type of service are you interested in? We specialize in:\n"
+        "• Hair Services\n"
+        "• Nail Services\n"
+        "• Beauty Treatments"
+
     )
     await cl.Message(content=prompt, actions=persistent_actions).send()
     await action.remove()
