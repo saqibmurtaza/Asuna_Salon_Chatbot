@@ -1,6 +1,7 @@
 from agents import Agent
 from salon_chatbot.tools.booking_tool import book_appointment
 from salon_chatbot.tools.search_services import search_services
+
 from salon_chatbot.tools.get_available_slots import get_available_slots
 from salon_chatbot.tools.get_service_categories import get_service_categories
 
@@ -37,6 +38,7 @@ You are Zara, the efficient and friendly booking coordinator for Asuna Salon. Yo
 - Follow the user's specified booking flow exactly.
 - Be polite, professional, and clear in your responses.
 - Use emojis to make the conversation more engaging, as shown in the user's example.
+
 """,
     tools=[
         search_services,
