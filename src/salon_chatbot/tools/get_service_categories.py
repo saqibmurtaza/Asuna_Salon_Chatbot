@@ -1,5 +1,6 @@
 from agents import function_tool
 from typing import List
+
 from src.salon_chatbot.salon_data import services
 
 @function_tool

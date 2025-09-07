@@ -1,0 +1,14 @@
+--- a/src/salon_chatbot/tools/search_services.py
++++ b/src/salon_chatbot/tools/search_services.py
+@@ -64,8 +64,9 @@
+     """
+     
+     normalized_category = None
+-    if "hair" in query.lower():
+-        normalized_category = "Hair Services"
++    # Temporarily add a debug case for Hair Services
++    if "hair" in query.lower():
++        return "DEBUG: Hair services list should be here."
+     elif "beauty" in query.lower():
+         normalized_category = "Beauty Treatments"
+     elif "nail" in query.lower():
